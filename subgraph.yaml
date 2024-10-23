@@ -1,0 +1,41 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: MockEvent
+    network: base-sepolia
+    source:
+      address: "0x658415088be97495ff1652BB7638d5b5f22cf220"
+      abi: MockEvent
+      startBlock: 16965109
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - FillOfframp
+        - Mint
+        - RequestOfframp
+        - Transfer
+        - Withdraw
+      abis:
+        - name: MockEvent
+          file: ./abis/MockEvent.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: FillOfframp(indexed bytes32,address,bytes32,bytes32)
+          handler: handleFillOfframp
+        - event: Mint(indexed address,uint256)
+          handler: handleMint
+        - event: RequestOfframp(indexed bytes32,(address,uint256,uint256,bytes32,bytes32))
+          handler: handleRequestOfframp
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: Withdraw(indexed address,uint256)
+          handler: handleWithdraw
+      file: ./src/mock-event.ts
