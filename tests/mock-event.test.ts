@@ -77,20 +77,20 @@ describe("Describe entity assertions", () => {
     let requestOfframpEvent = createRequestOfframpEvent(randomId, paramsValue);
 
     handleRequestOfframp(requestOfframpEvent);
-    let entity = OffRamp.load(randomId.toString());
+    let entity = OffRamp.load(randomId);
 
     assert.assertNotNull(entity);
 
     assert.fieldEquals(
       "OffRamp",
-      randomId.toString(),
+      randomId.toHexString(),
       "id",
-      randomId.toString()
+      randomId.toHexString()
     );
 
     assert.fieldEquals(
       "OffRamp",
-      randomId.toString(),
+      randomId.toHexString(),
       "user",
       spender.toHexString()
     );
@@ -129,20 +129,20 @@ describe("Describe entity assertions", () => {
 
     handleRequestOfframp(requestOfframpEvent);
 
-    let entity = OffRamp.load(randomId.toString());
+    let entity = OffRamp.load(randomId);
 
     assert.assertNotNull(entity);
 
     assert.fieldEquals(
       "OffRamp",
-      randomId.toString(),
+      randomId.toHexString(),
       "id",
-      randomId.toString()
+      randomId.toHexString()
     );
 
     assert.fieldEquals(
       "OffRamp",
-      randomId.toString(),
+      randomId.toHexString(),
       "status",
       "PENDING"
     );
@@ -164,34 +164,34 @@ describe("Describe entity assertions", () => {
 
     handleFillOfframp(fillOffRamp);
 
-    let entityFill = OffRamp.load(randomId.toString());
+    let entityFill = OffRamp.load(randomId);
 
     assert.assertNotNull(entityFill);
 
     assert.fieldEquals(
       "OffRamp",
-      randomId.toString(),
+      randomId.toHexString(),
       "id",
-      randomId.toString()
+      randomId.toHexString()
     );
 
     assert.fieldEquals(
       "OffRamp",
-      randomId.toString(),
+      randomId.toHexString(),
       "receiver",
       receiverAddress.toHexString()
     );
 
     assert.fieldEquals(
       "OffRamp",
-      randomId.toString(),
+      randomId.toHexString(),
       "status",
       "COMPLETED"
     );
 
     assert.fieldEquals(
       "OffRamp",
-      randomId.toString(),
+      randomId.toHexString(),
       "proof",
       fillOffRamp.params.proof.toHexString()
     );
