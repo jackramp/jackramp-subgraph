@@ -4,59 +4,196 @@ import {
   test,
   clearStore,
   beforeAll,
-  afterAll
-} from "matchstick-as/assembly/index"
-import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts"
-import { Approval } from "../generated/schema"
-import { Approval as ApprovalEvent } from "../generated/MockEvent/MockEvent"
-import { handleApproval } from "../src/mock-event"
-import { createApprovalEvent } from "./mock-event-utils"
+  afterAll,
+} from "matchstick-as/assembly/index";
+import {
+  Address,
+  BigInt,
+  Bytes,
+  ethereum,
+  json,
+  JSONValue,
+  log,
+} from "@graphprotocol/graph-ts";
+import { Approval as ApprovalEvent } from "../generated/MockEvent/MockEvent";
+import {
+  createApprovalEvent,
+  createFillOfframpEvent,
+  createRequestOfframpEvent,
+} from "./mock-event-utils";
+import { OffRamp } from "../generated/schema";
+import { handleFillOfframp, handleRequestOfframp } from "../src/mock-event";
 
 // Tests structure (matchstick-as >=0.5.0)
 // https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0
 
 describe("Describe entity assertions", () => {
   beforeAll(() => {
-    let owner = Address.fromString("0x0000000000000000000000000000000000000001")
+    let owner = Address.fromString(
+      "0x0000000000000000000000000000000000000001"
+    );
     let spender = Address.fromString(
       "0x0000000000000000000000000000000000000001"
-    )
-    let value = BigInt.fromI32(234)
-    let newApprovalEvent = createApprovalEvent(owner, spender, value)
-    handleApproval(newApprovalEvent)
-  })
+    );
+    let value = BigInt.fromI32(234);
+  });
 
   afterAll(() => {
-    clearStore()
-  })
+    clearStore();
+  });
 
   // For more test scenarios, see:
   // https://thegraph.com/docs/en/developer/matchstick/#write-a-unit-test
 
-  test("Approval created and stored", () => {
-    assert.entityCount("Approval", 1)
-
-    // 0xa16081f360e3847006db660bae1c6d1b2e17ec2a is the default address used in newMockEvent() function
-    assert.fieldEquals(
-      "Approval",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "owner",
+  test("Request OffRamp event", () => {
+    let owner = Address.fromString(
       "0x0000000000000000000000000000000000000001"
-    )
-    assert.fieldEquals(
-      "Approval",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "spender",
+    );
+    let spender = Address.fromString(
       "0x0000000000000000000000000000000000000001"
-    )
-    assert.fieldEquals(
-      "Approval",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "value",
-      "234"
-    )
+    );
 
-    // More assert options:
-    // https://thegraph.com/docs/en/developer/matchstick/#asserts
-  })
-})
+    let value = BigInt.fromI32(234);
+    const randomId = Bytes.fromHexString(
+      "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+    ) as Bytes;
+
+    const paramsValue = changetype<ethereum.Tuple>([
+      ethereum.Value.fromAddress(owner),
+      ethereum.Value.fromUnsignedBigInt(value),
+      ethereum.Value.fromUnsignedBigInt(value.div(BigInt.fromI32(2))),
+      ethereum.Value.fromFixedBytes(
+        Bytes.fromHexString(
+          "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+        ) as Bytes
+      ),
+      ethereum.Value.fromFixedBytes(
+        Bytes.fromHexString(
+          "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+        ) as Bytes
+      ),
+    ]);
+
+    let requestOfframpEvent = createRequestOfframpEvent(randomId, paramsValue);
+
+    handleRequestOfframp(requestOfframpEvent);
+    let entity = OffRamp.load(randomId.toString());
+
+    assert.assertNotNull(entity);
+
+    assert.fieldEquals(
+      "OffRamp",
+      randomId.toString(),
+      "id",
+      randomId.toString()
+    );
+
+    assert.fieldEquals(
+      "OffRamp",
+      randomId.toString(),
+      "user",
+      spender.toHexString()
+    );
+  });
+
+  test("Fill OffRamp event", () => {
+    let owner = Address.fromString(
+      "0x0000000000000000000000000000000000000001"
+    );
+    let spender = Address.fromString(
+      "0x0000000000000000000000000000000000000001"
+    );
+
+    let value = BigInt.fromI32(234);
+    const randomId = Bytes.fromHexString(
+      "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+    ) as Bytes;
+
+    const paramsValue = changetype<ethereum.Tuple>([
+      ethereum.Value.fromAddress(owner),
+      ethereum.Value.fromUnsignedBigInt(value),
+      ethereum.Value.fromUnsignedBigInt(value.div(BigInt.fromI32(2))),
+      ethereum.Value.fromFixedBytes(
+        Bytes.fromHexString(
+          "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+        ) as Bytes
+      ),
+      ethereum.Value.fromFixedBytes(
+        Bytes.fromHexString(
+          "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+        ) as Bytes
+      ),
+    ]);
+
+    let requestOfframpEvent = createRequestOfframpEvent(randomId, paramsValue);
+
+    handleRequestOfframp(requestOfframpEvent);
+
+    let entity = OffRamp.load(randomId.toString());
+
+    assert.assertNotNull(entity);
+
+    assert.fieldEquals(
+      "OffRamp",
+      randomId.toString(),
+      "id",
+      randomId.toString()
+    );
+
+    assert.fieldEquals(
+      "OffRamp",
+      randomId.toString(),
+      "status",
+      "PENDING"
+    );
+
+    const receiverAddress = Address.fromString(
+      "0x0000000000000000000000000000000000000003"
+    );
+
+    let fillOffRamp = createFillOfframpEvent(
+      randomId,
+      receiverAddress,
+      Bytes.fromHexString(
+        "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+      ) as Bytes,
+      Bytes.fromHexString(
+        "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+      ) as Bytes
+    );
+
+    handleFillOfframp(fillOffRamp);
+
+    let entityFill = OffRamp.load(randomId.toString());
+
+    assert.assertNotNull(entityFill);
+
+    assert.fieldEquals(
+      "OffRamp",
+      randomId.toString(),
+      "id",
+      randomId.toString()
+    );
+
+    assert.fieldEquals(
+      "OffRamp",
+      randomId.toString(),
+      "receiver",
+      receiverAddress.toHexString()
+    );
+
+    assert.fieldEquals(
+      "OffRamp",
+      randomId.toString(),
+      "status",
+      "COMPLETED"
+    );
+
+    assert.fieldEquals(
+      "OffRamp",
+      randomId.toString(),
+      "proof",
+      fillOffRamp.params.proof.toHexString()
+    );
+  });
+});
