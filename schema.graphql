@@ -5,7 +5,7 @@ enum OffRampStatus {
 
 
 type OffRamp @entity {
-  id: ID!  # transaction hash or event hash (unique identifier)
+  id: Bytes!  # transaction hash or event hash (unique identifier)
 
   # Off-ramp Request Parameters
   user: Bytes!  # address

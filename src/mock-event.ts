@@ -27,9 +27,9 @@ export function handleMint(event: MintEvent): void {
 }
 
 export function handleRequestOfframp(event: RequestOfframpEvent): void {
-  let entity = new OffRamp(event.params.requestOfframpId.toString());
+  let entity = new OffRamp(event.params.requestOfframpId);
 
-  entity.id = event.params.requestOfframpId.toString();
+  entity.id = event.params.requestOfframpId;
   entity.user = event.params.params.user;
   entity.requestedAmount = event.params.params.amount;
   entity.requestedAmountRealWorld = event.params.params.amountRealWorld;
@@ -44,11 +44,11 @@ export function handleRequestOfframp(event: RequestOfframpEvent): void {
 }
 
 export function handleFillOfframp(event: FillOfframpEvent): void {
-  const entity = OffRamp.load(event.params.requestOfframpId.toString());
+  const entity = OffRamp.load(event.params.requestOfframpId);
 
   if (entity === null) {
     log.error("OffRamp entity not found for requestOfframpId: {}", [
-      event.params.requestOfframpId.toString(),
+      event.params.requestOfframpId.toHexString(),
     ]);
 
     return;
