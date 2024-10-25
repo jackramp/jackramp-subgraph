@@ -1,41 +1,38 @@
-type Approval @entity(immutable: true) {
-  id: Bytes!
-  owner: Bytes! # address
-  spender: Bytes! # address
-  value: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+enum OffRampStatus {
+  PENDING     # Request initiated but not yet processed
+  COMPLETED   # Off-ramp successfully processed and completed
 }
 
-type FillOfframp @entity(immutable: true) {
-  id: Bytes!
-  requestOfframpId: Bytes! # bytes32
-  receiver: Bytes! # address
-  proof: Bytes! # bytes32
-  reclaimProof: Bytes! # bytes32
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+
+type OffRamp @entity {
+  id: ID!  # transaction hash or event hash (unique identifier)
+
+  # Off-ramp Request Parameters
+  user: Bytes!  # address
+  requestedAmount: BigInt!  # uint256
+  requestedAmountRealWorld: BigInt!  # uint256 (fiat equivalent)
+  channelAccount: Bytes!  # bytes32
+  channelId: Bytes!  # bytes32
+  status: OffRampStatus!  # enum status
+
+  # Blockchain Context
+  blockNumber: BigInt!  # uint256 (block number)
+  blockTimestamp: BigInt!  # uint256 (UNIX timestamp)
+  transactionHash: Bytes!  # bytes32 (transaction hash)
+
+  # Optional Fill Status
+  receiver: Bytes  # address (if filled)
+  proof: Bytes  # bytes32 (fill proof)
+  reclaimProof: Bytes  # bytes32 (reclaim proof)
+  fillBlockNumber: BigInt  # uint256 (fill block number)
+  fillBlockTimestamp: BigInt  # uint256 (UNIX timestamp of fill)
+  fillTransactionHash: Bytes  # bytes32 (fill transaction hash)
 }
 
 type Mint @entity(immutable: true) {
   id: Bytes!
   user: Bytes! # address
   amount: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type RequestOfframp @entity(immutable: true) {
-  id: Bytes!
-  requestOfframpId: Bytes! # bytes32
-  params_user: Bytes! # address
-  params_amount: BigInt! # uint256
-  params_amountRealWorld: BigInt! # uint256
-  params_channelAccount: Bytes! # bytes32
-  params_channelId: Bytes! # bytes32
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!

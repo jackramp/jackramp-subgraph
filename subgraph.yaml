@@ -16,22 +16,17 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - Approval
-        - FillOfframp
-        - Mint
-        - RequestOfframp
+        - OffRamp
         - Transfer
         - Withdraw
       abis:
         - name: MockEvent
           file: ./abis/MockEvent.json
       eventHandlers:
-        - event: Approval(indexed address,indexed address,uint256)
-          handler: handleApproval
-        - event: FillOfframp(indexed bytes32,address,bytes32,bytes32)
-          handler: handleFillOfframp
         - event: Mint(indexed address,uint256)
           handler: handleMint
+        - event: FillOfframp(indexed bytes32,address,bytes32,bytes32)
+          handler: handleFillOfframp
         - event: RequestOfframp(indexed bytes32,(address,uint256,uint256,bytes32,bytes32))
           handler: handleRequestOfframp
         - event: Transfer(indexed address,indexed address,uint256)
