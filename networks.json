@@ -1,8 +1,8 @@
 {
-  "base-sepolia": {
-    "MockEvent": {
-      "address": "0x658415088be97495ff1652BB7638d5b5f22cf220",
-      "startBlock": 16965109
+  "holesky": {
+    "Jackramp": {
+      "address": "0xaabe76d29cbc05a95557a0db880d83d9bbeeed03",
+      "startBlock": 2609411
     }
   }
 }

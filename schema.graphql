@@ -3,7 +3,6 @@ enum OffRampStatus {
   COMPLETED   # Off-ramp successfully processed and completed
 }
 
-
 type OffRamp @entity {
   id: Bytes!  # transaction hash or event hash (unique identifier)
 

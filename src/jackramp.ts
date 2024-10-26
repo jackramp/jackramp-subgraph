@@ -1,12 +1,11 @@
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { log } from "@graphprotocol/graph-ts";
 import {
-  Approval as ApprovalEvent,
   FillOfframp as FillOfframpEvent,
   Mint as MintEvent,
   RequestOfframp as RequestOfframpEvent,
   Transfer as TransferEvent,
   Withdraw as WithdrawEvent,
-} from "../generated/MockEvent/MockEvent";
+} from "../generated/Jackramp/Jackramp"
 import { Mint, OffRamp, Transfer, Withdraw } from "../generated/schema";
 
 const STATUS_PENDING = "PENDING";

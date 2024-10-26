@@ -1,13 +1,13 @@
 {
-  "name": "jackramp-base-testnet",
+  "name": "jackramp-web",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ jackramp-base-testnet",
-    "create-local": "graph create --node http://localhost:8020/ jackramp-base-testnet",
-    "remove-local": "graph remove --node http://localhost:8020/ jackramp-base-testnet",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 jackramp-base-testnet",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ jackramp-web",
+    "create-local": "graph create --node http://localhost:8020/ jackramp-web",
+    "remove-local": "graph remove --node http://localhost:8020/ jackramp-web",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 jackramp-web",
     "test": "graph test"
   },
   "dependencies": {
