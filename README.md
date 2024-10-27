@@ -2,6 +2,10 @@
 
 A subgraph implementation for tracking Jackramp contract events and entities on the Holesky network. This subgraph indexes mint events, transfers, withdrawals, and off-ramp transactions.
 
+## 📧 Docs
+
+Project Documentation : [https://kbaji.gitbook.io/jackramp](https://kbaji.gitbook.io/jackramp)
+
 ## 📋 Overview
 
 This subgraph tracks the following events from the Jackramp contract:
