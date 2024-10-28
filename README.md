@@ -103,11 +103,12 @@ Get recent mints:
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📜 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🔗 Links
 - [The Graph Protocol Documentation](https://thegraph.com/docs/en/)
 - [AssemblyScript Documentation](https://www.assemblyscript.org/)
 - [GraphQL Documentation](https://graphql.org/learn/)
+
+## 📜 License
+
+This project is licensed under the [MIT license](https://opensource.org/licenses/MIT).
